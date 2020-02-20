@@ -68,7 +68,7 @@ function parseHeartRate(data) {
 }
 
 function testLog(){
-    document.getElementById('target1').innerHTML = "Function fired!";
+    document.getElementById('target1').innerHTML = "Heart Rate Function fired!";
     navigator.bluetooth.requestDevice({
         // acceptAllDevices: true
         filters: [{
