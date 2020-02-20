@@ -1,0 +1,18 @@
+{
+  "name": "webtooth",
+  "version": "1.0.0",
+  "description": "This application is the MVP for the home brewed Life365 BYOD app.  The goal is to create an application  that can be opened on any can be opened on any device via a web-browser.  In order to be a viable product it must have the following capabilities:",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Kyle Thomas",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "superagent": "^5.2.1"
+  }
+}

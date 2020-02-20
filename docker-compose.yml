@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  node-test:
+    build: .
+    image: kthomas365/webtooth_app
+    container_name: web-tooth
+    ports:
+      - 4080:4080
