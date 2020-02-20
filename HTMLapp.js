@@ -2,7 +2,7 @@ let chosenHeartRateService = null;
 
 function handleBodySensorLocationCharacteristic(characteristic) {
     if (characteristic === null) {
-        console.log("Unknown sensor location.");
+        document.getElementById('target2').innerHTML = "Unknown sensor location.";
         return Promise.resolve();
     }
     return characteristic.readValue()
@@ -31,7 +31,7 @@ function handleHeartRateMeasurementCharacteristic(characteristic) {
 
 function onHeartRateChanged(event) {
     const characteristic = event.target;
-    console.log(parseHeartRate(characteristic.value));
+    document.getElementById('target3').innerHTML = parseHeartRate(characteristic.value);
 }
 
 function parseHeartRate(data) {
@@ -68,13 +68,13 @@ function parseHeartRate(data) {
 }
 
 function testLog(){
-    console.log("Function fired!");
+    document.getElementById('target1').innerHTML = "Function fired!";
     navigator.bluetooth.requestDevice({
         filters: [{
             services: ['heart_rate'],
         }]
     }).then(device => device.gatt.connect())
-        .then(server => server.getPrimaryService('heart_rate'))
+        .then(server => { document.getElementById('target4').innerHTML = JSON.stringify(server); server.getPrimaryService('heart_rate')})
         .then(service => {
             chosenHeartRateService = service;
             return Promise.all([
