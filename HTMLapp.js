@@ -31,7 +31,7 @@ function handleHeartRateMeasurementCharacteristic(characteristic) {
 
 function onHeartRateChanged(event) {
     const characteristic = event.target;
-    document.getElementById('target3').innerHTML = parseHeartRate(characteristic.value);
+    document.getElementById('target3').innerHTML = "parseHeartRate: " + parseHeartRate(characteristic.value);
 }
 
 function parseHeartRate(data) {
@@ -70,13 +70,13 @@ function parseHeartRate(data) {
 function testLog(){
     document.getElementById('target1').innerHTML = "Function fired!";
     navigator.bluetooth.requestDevice({
-        acceptAllDevices: true
-        // filters: [{
-        //     // services: ['heart_rate'],
-        //     services: ['generic_access']
-        // }]
+        // acceptAllDevices: true
+        filters: [{
+            services: ['heart_rate'],
+            // services: ['generic_access']
+        }]
     }).then(device => device.gatt.connect())
-        .then(server => { document.getElementById('target4').innerHTML = JSON.stringify(server); server.getPrimaryService('heart_rate')})
+        .then(server => { document.getElementById('target4').innerHTML = "server: " + JSON.stringify(server); server.getPrimaryService('heart_rate')})
         .then(service => {
             chosenHeartRateService = service;
             return Promise.all([
