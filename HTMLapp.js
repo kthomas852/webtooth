@@ -70,10 +70,11 @@ function parseHeartRate(data) {
 function testLog(){
     document.getElementById('target1').innerHTML = "Function fired!";
     navigator.bluetooth.requestDevice({
-        filters: [{
-            // services: ['heart_rate'],
-            services: ['generic_access']
-        }]
+        acceptAllDevices: true
+        // filters: [{
+        //     // services: ['heart_rate'],
+        //     services: ['generic_access']
+        // }]
     }).then(device => device.gatt.connect())
         .then(server => { document.getElementById('target4').innerHTML = JSON.stringify(server); server.getPrimaryService('heart_rate')})
         .then(service => {
