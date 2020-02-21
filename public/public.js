@@ -111,11 +111,12 @@ function testLog(){
     axios.post('/webtooth/logs', {origin: "testLog", message: 'This test has been successful'})
         .then((res)=>{console.log(parseHeartRate(characteristic.value));})
         .catch((err)=>{console.log(err);});
-    console.log(JSON.stringify(navigator))
+    console.log(JSON.stringify(navigator));
     navigator.bluetooth.requestDevice({
-        filters: [{
-            services: ['heart_rate'],
-        }]
+        acceptAllDevices: true
+        // filters: [{
+        //     services: ['heart_rate'],
+        // }]
     }).then(device => device.gatt.connect())
         .then(server => {console.log('post: ' + server);server.getPrimaryService('heart_rate')})
         .then(service => {

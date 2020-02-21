@@ -70,20 +70,34 @@ function parseHeartRate(data) {
 function testLog(){
     document.getElementById('target1').innerHTML = "Pair Function fired!";
     navigator.bluetooth.requestDevice({
-        acceptAllDevices: true
+        acceptAllDevices: true,
         // filters: [{
         //     services: ['heart_rate'],
-        //     // services: ['generic_access']
-        // }]
-    }).then(device => device.gatt.connect())
-        .then(server => { document.getElementById('target4').innerHTML = "server: " + JSON.stringify(server); server.getPrimaryService('heart_rate')})
-        .then(service => {
-            chosenHeartRateService = service;
-            return Promise.all([
-                service.getCharacteristic('body_sensor_location')
-                    .then(handleBodySensorLocationCharacteristic),
-                service.getCharacteristic('heart_rate_measurement')
-                    .then(handleHeartRateMeasurementCharacteristic),
-            ]);
-        });
+        //     // name: ['iChoice']
+        // }],
+    // {services: ['heart_rate']}
+        optionalServices: ['heart_rate', 'generic_access', 'pulse_oximeter']
+    }).then((device) => { document.getElementById('target3').innerHTML = "device: " + JSON.stringify(device.name); console.log(device); return device.gatt.connect();})
+        .then((server) => {
+            console.log(server);
+            return server.getPrimaryService('pulse_oximeter')}).then((service)=>{
+                document.getElementById('target4').innerHTML = "service: " + JSON.stringify(service);
+                return Promise.all([
+                    service.getCharacteristic('body_sensor_location')
+                        .then(handleBodySensorLocationCharacteristic),
+                    service.getCharacteristic('heart_rate_measurement')
+                        .then(handleHeartRateMeasurementCharacteristic),
+                ])
+        // .then((service) => {
+        //     document.getElementById('target4').innerHTML = "server: " + JSON.stringify(service);
+        //     console.log(service);
+        //     chosenHeartRateService = service;
+        //     return Promise.all([
+        //         service.getCharacteristic('body_sensor_location')
+        //             .then(handleBodySensorLocationCharacteristic),
+        //         service.getCharacteristic('heart_rate_measurement')
+        //             .then(handleHeartRateMeasurementCharacteristic),
+        //     ])
+        //         .catch((err)=>{console.log('promise catch: ' + err)});
+        }).catch((err)=>{console.log('promise catch: ' + err); document.getElementById('target4').innerHTML = 'promise catch: ' + err});
 }
