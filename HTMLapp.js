@@ -1,3 +1,4 @@
+document.getElementById('jsv').innerHTML = 'v0.0.20';
 let chosenHeartRateService = null;
 
 function handleBodySensorLocationCharacteristic(characteristic) {
@@ -76,18 +77,20 @@ function testLog(){
         //     // name: ['iChoice']
         // }],
     // {services: ['heart_rate']}
-        optionalServices: ['heart_rate', 'generic_access', 'pulse_oximeter']
+        optionalServices: ['heart_rate', 'generic_access', 'pulse_oximeter', 'blood_pressure', 'device_information']
     }).then((device) => { document.getElementById('target3').innerHTML = "device: " + JSON.stringify(device.name); console.log(device); return device.gatt.connect();})
         .then((server) => {
             console.log(server);
-            return server.getPrimaryService('pulse_oximeter')}).then((service)=>{
-                document.getElementById('target4').innerHTML = "service: " + JSON.stringify(service);
-                return Promise.all([
-                    service.getCharacteristic('body_sensor_location')
-                        .then(handleBodySensorLocationCharacteristic),
-                    service.getCharacteristic('heart_rate_measurement')
-                        .then(handleHeartRateMeasurementCharacteristic),
-                ])
+            return server.getPrimaryServices().then((service) => {
+                    document.getElementById('target4').innerHTML = "server: " + JSON.stringify(service);
+                    console.log(service);
+                    chosenHeartRateService = service;
+                    return Promise.all([
+                        service.getCharacteristic('body_sensor_location')
+                            .then(handleBodySensorLocationCharacteristic),
+                        service.getCharacteristic('heart_rate_measurement')
+                            .then(handleHeartRateMeasurementCharacteristic),
+                    ])})
         // .then((service) => {
         //     document.getElementById('target4').innerHTML = "server: " + JSON.stringify(service);
         //     console.log(service);
